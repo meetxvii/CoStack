@@ -2,7 +2,7 @@
     <div>
         
         <div v-if="openSearchDialog">
-            <Search @closeSearchDialog="openSearchDialog = false" />
+            <Search @closeSearchDialog="toggleSearchDialog" />
         </div>
     
     </div>
@@ -13,6 +13,7 @@
                     <router-link :to="{name:'dashboard'}">
                         <h1 class="heading-2 text-blue font-rounded ">CoStack</h1>
                     </router-link>
+                    
                 </div>
 
                 <div class="hidden md:block">
@@ -32,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="ml-auto mx-4 md:ml-4 relative w-10 h-10 rounded-2xl bg-blue/10 hover:border-[1px] hover:border-blue/20 hover:text-blue text-white cursor-pointer duration-300 transition-all" @click="openSearchDialog = true">                    
+                <div class="ml-auto mx-4 md:ml-4 relative w-10 h-10 rounded-2xl bg-blue/10 hover:border-[1px] hover:border-blue/20 hover:text-blue text-white cursor-pointer duration-300 transition-all" @click="toggleSearchDialog">                    
                     <div class="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
@@ -107,10 +108,12 @@
 </template>
 
 <script>
-    import {ref} from 'vue';
+    import {onMounted, ref} from 'vue';
+    import {CheckLogin} from '../composables/CheckLogin';
     import {useUser} from "../stores/User";
-    import { onMounted } from '@vue/runtime-core';
     import Search from "./Search.vue"
+
+
     export default {
         name: 'TopHeader',
 
@@ -124,21 +127,22 @@
                 {'name':'Topics', 'link': 'login'},
                 {'name':'Technologies', 'link': 'register'},
             ]);
+            onMounted(()=>{
+                CheckLogin();
+            });
             const user = useUser();
 
-            onMounted(()=>{
-                const contentview = document.getElementById('contentview');
-                const navbar = document.getElementById('navbar');
-                contentview.classList.add("pt-20");
-                contentview.classList.add("md:pt-24");
-            });
+            const toggleSearchDialog = () => {
+                openSearchDialog.value = !openSearchDialog.value;
+            }
 
             return {
                 user,
                 openSearchDialog,
                 openMobileMenu,
                 menuList,
-                showProfileMenu
+                showProfileMenu,
+                toggleSearchDialog
             }
         },
         components:{

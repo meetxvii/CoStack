@@ -1,7 +1,7 @@
 <template>
     <div class="bg-extra-dark-blue min-h-screen flex justify-center">
         <div class="self-center bg-white w-[90vw] md:w-[60vw] text-grey rounded-2xl flex">
-            <div class="md:w-[50%] bg-[url('../img/login.svg')] bg-no-repeat bg-contain bg-center md:mx-4  ">
+            <div class="md:w-[50%] bg-[url('../img/login.svg')] bg-no-repeat bg-contain bg-center md:mx-4 hidden md:block ">
 
             </div>
             <div class="w-[100%] md:w-[50%] pt-12 pb-12 px-8 md:px-14">

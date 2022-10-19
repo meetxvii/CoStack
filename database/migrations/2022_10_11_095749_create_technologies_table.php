@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('status')->after('password');
-            $table->boolean('email_verified')->after('status');
-            $table->boolean('info')->after('email_verified');
+        Schema::create('technologies', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 50);
+            $table->string('description', 255);
+            $table->string('image', 255);
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('technologies');
     }
 };

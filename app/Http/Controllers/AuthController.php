@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 class AuthController extends Controller
 {
-    public  function register(Request $request){
+    public function register(Request $request){
         return User::create([
             "username"=>$request->input('username'),
             "email"=>$request->input('email'),
             "password"=>Hash::make($request->input('password')),
-            "status"=>true,
-            "email_verified"=>false,
+            "is_active"=>true,
+            "is_verified"=>false,
             "info"=>false,
         ]);
     }

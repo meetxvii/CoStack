@@ -9,11 +9,12 @@
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         @vite('resources/css/app.css')
-
+        
     </head>
     <body class="antialiased">
         <div id="app"></div>
         @vite('resources/js/fontawesome.js')
         @vite('resources/js/app.js')
+        
     </body>
 </html>

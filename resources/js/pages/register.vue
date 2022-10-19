@@ -354,7 +354,6 @@
                     password: form.password,    
                 }).
                 then((res) => {
-                    console.log(res);
                     if(res.statusText === "Created"){
                         registrationSuccess.value = true;
                         setTimeout(() => {

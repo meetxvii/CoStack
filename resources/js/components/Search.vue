@@ -1,6 +1,6 @@
 <template>
     <div class="w-screen min-h-screen bg-blue/25 fixed backdrop-blur-[2px] z-50 flex justify-center" >
-        <div class="absolute top-4 right-8 bg-white px-4 py-2 rounded-xl text-grey hover:text-blue hover:scale-90 transition-all duration-100 cursor-pointer text-lg" @click="$emit('closeSearchDialog')">
+        <div class="absolute top-4 right-8 bg-white px-4 py-2 rounded-xl text-grey hover:text-blue hover:scale-90 transition-all duration-100 cursor-pointer text-lg" @click="closeDialog">
             <i class="fa-solid fa-xmark"></i>
         </div>
         <div class="px-10 py-10 w-[70%] bg-white self-start mt-20 rounded-3xl" id="searchPanel">
@@ -10,7 +10,7 @@
                     <div class="text-grey mr-2 order-1 peer-focus:text-blue">
                         <i class="fa-solid fa-magnifying-glass "></i>
                     </div>
-                    <div v-if="searchText!==''" class="text-grey order-3">
+                    <div v-if="searchText!==''" @click="searchText = ''" class="text-grey order-3 cursor-pointer">
                         <i class="fa-solid fa-xmark"></i>
                     </div>
                 </div>
@@ -26,20 +26,24 @@ export default {
     name: 'Search',
     setup (props, ctx) {
         const searchText = ref('');
+        
         onMounted(()=>{
             setTimeout(() => {
-                window.addEventListener('click', (e)=>{
-                    if(!document.getElementById('searchPanel').contains(e.target)){
-                        ctx.emit('closeSearchDialog')
-                    }
-                })
+                window.addEventListener('click', closeDialog);
             }, 500);
         })
-        onUnmounted(()=>{
-            console.log('unmounted');
-        })
+
+        const closeDialog = () =>{
+            //check if the click is inside the search panel
+            if(!document.getElementById('searchPanel').contains(event.target)){
+                ctx.emit('closeSearchDialog');
+            }
+            window.removeEventListener('click', closeDialog);
+            
+        }
         return {
-            searchText
+            searchText,
+            closeDialog
         }
     }
 }
