@@ -29,6 +29,26 @@
                                     </div>
                                 </div>
                             </li>
+                            <li v-if="!user.isLoggedIn" class="group text-blue/60 hover:text-blue flex justify-center items-center">
+                                <div class="max-w-fit relative overflow-hidden py-2">
+                                    <router-link :to="{name:'login'}">
+                                        Login
+                                    </router-link>
+                                    <div class="bg-blue w-full h-1 rounded
+                                    absolute right-40 opacity-0 group-hover:right-0 group-hover:opacity-100 transition-all duration-300">
+                                    </div>
+                                </div>
+                            </li>
+                            <li v-if="!user.isLoggedIn" class="group text-blue/60 hover:text-blue flex justify-center items-center">
+                                <div class="max-w-fit relative overflow-hidden py-2">
+                                    <router-link :to="{name:'register'}">
+                                        Register
+                                    </router-link>
+                                    <div class="bg-blue w-full h-1 rounded
+                                    absolute right-40 opacity-0 group-hover:right-0 group-hover:opacity-100 transition-all duration-300">
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -51,7 +71,7 @@
                             <div v-if="!openMobileMenu"  class="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
                                 <i class="fa-solid fa-bars-staggered  -scale-x-100"></i>
                             </div>
-                            <div v-else-if="openMobileMenu" class="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+                            <div v-else-if="openMobileMenu" class="absolute top-[50%] text-blue left-[50%] translate-x-[-50%] translate-y-[-50%]">
                                 <i class="fa-solid fa-xmark"></i>
                             </div>
                         </transition>
@@ -65,16 +85,10 @@
                             <div v-if="showProfileMenu" class="absolute right-0 top-12 border-2  rounded-xl bg-white px-5 py-2 w-[9rem]">
                                 <ul>
                                     <li class="py-1 font-semibold text-grey hover:text-blue border-b-2">
-                                        <router-link :to="{name:'login'}">Profile</router-link>
-                                    </li>
-                                    <li class="py-1 font-semibold text-grey hover:text-blue border-b-2">
-                                        <router-link :to="{name:'login'}">Issues</router-link>
-                                    </li>
-                                    <li class="py-1 font-semibold text-grey hover:text-blue border-b-2">
-                                        <router-link :to="{name:'login'}">My Solutions</router-link>
+                                        <router-link :to="{name:'user-question', params:{'id': user.user.id}}">My Questions</router-link>
                                     </li>
                                     <li class="py-1 font-semibold text-grey hover:text-red-600">
-                                        <router-link :to="{name:'login'}">Logout</router-link>
+                                        <button @click="logout">Logout</button>
                                     </li>
                                 </ul>
                             </div>
@@ -86,9 +100,9 @@
             </div>
             
             <transition name="slide-fade">
-                <div class="w-screen block md:hidden bg-panel-700 absolute top-14 z-20" v-if="openMobileMenu">
-                    <div class="py-2">
-                        <ul class="mobileMenuList">
+                <div class="w-screen block md:hidden bg-panel-700 fixed top-14 z-20" v-if="openMobileMenu">
+                    <div class="py-2 border-b-2 border-blue/40">
+                        <ul class="mobileMenuList ">
                             <li v-for="page in menuList" :key="page.name" class="uppercase text-blue/30 hover:text-blue font-semibold flex justify-center items-center group border-b-2 border-blue/10">
                                 <div class="max-w-fit relative overflow-hidden py-2 my-2">
                                     <router-link :to="{name:`${page.link}`}" >{{page.name}}
@@ -112,7 +126,7 @@
     import {CheckLogin} from '../composables/CheckLogin';
     import {useUser} from "../stores/User";
     import Search from "./Search.vue"
-
+    import router from "../router"
 
     export default {
         name: 'TopHeader',
@@ -123,17 +137,27 @@
             const showProfileMenu = ref(false);
             const menuList = ref([
                 {'name':'home', 'link':'dashboard'},
-                {'name':'communities', 'link': 'login'},
-                {'name':'Topics', 'link': 'login'},
-                {'name':'Technologies', 'link': 'register'},
+                {'name':'Technologies', 'link': 'technologies'},
+                {'name':'Featured', 'link': 'Featured'},
             ]);
-            onMounted(()=>{
-                CheckLogin();
+            const user =ref({});
+            onMounted(async()=>{
+                await CheckLogin();
+                user.value = await useUser();
+
             });
-            const user = useUser();
 
             const toggleSearchDialog = () => {
                 openSearchDialog.value = !openSearchDialog.value;
+            }
+
+            const logout = async () => {
+                await axios.post('/api/logout').then((res)=>{
+                    if(res.data.message === 'success'){
+                        
+                        router.go(0);
+                    }
+                })
             }
 
             return {
@@ -142,7 +166,8 @@
                 openMobileMenu,
                 menuList,
                 showProfileMenu,
-                toggleSearchDialog
+                toggleSearchDialog,
+                logout
             }
         },
         components:{

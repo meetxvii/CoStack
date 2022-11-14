@@ -291,7 +291,7 @@
 
             watch(()=>form.password, (value) => {
 
-                //validate password with regex with 6-16 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+                
                 const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/;
                 if(!regex.test(value)){
                     validation.isPasswordValid = false;

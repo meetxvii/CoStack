@@ -97,10 +97,10 @@
 
         <div v-auto-animate>
             <template v-for="answer in filteredAnswers" :key="answer.id"  >
-                <AnswerTemplate :answer="answer" :user="loggedUser" @reloadAnswers = "getAnswers" @reported="showReportModal=true" />
+                <AnswerTemplate :answer="answer" :user="loggedUser" :question_info="Question_info" @reloadAnswers = "getAnswers" @reported="showReportModal=true" />
             </template>
         </div>
-
+        
 
     </div>
 </template>
@@ -115,26 +115,26 @@ import AnswerTemplate from './AnswerTemplate.vue';
 
 import {htmlToText} from 'html-to-text';
 export default {
-    props: ['question_id'],
+    props: ['question_info'],
     setup (props, context) {
         const loggedUser = useUser();
 
-        const QuestionId = computed(() => {
-            return props.question_id;
+        const Question_info = computed(() => {
+            return props.question_info;
         });
 
-        watch(QuestionId, (newVal, oldVal) => {
+        watch(Question_info, (newVal, oldVal) => {
             getAnswers()
-        });
+        }, {deep: true});
 
         const answers = ref([]);
         const filteredAnswers = ref([]);
 
         const getAnswers = async() =>{
-
+            
             const res = await axios.get('/api/answers', {
                 params: {
-                    question_id: QuestionId.value
+                    question_id: Question_info.value.id
                 }
             }).then((res) => {
                 
@@ -151,6 +151,8 @@ export default {
         const sortby = ref('default')
         const showSearchBar = ref(false);
         const searchQuery = ref('');
+
+       
 
         watch(searchQuery, (newVal, oldVal) => {
             if(!showSearchBar.value ){
@@ -208,8 +210,9 @@ export default {
         }
 
         return {
-            QuestionId,
+            Question_info,
             answers,
+          
             filteredAnswers,
             sortby,
             showSearchBar,

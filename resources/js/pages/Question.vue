@@ -71,7 +71,8 @@
             <!-- Answers -->
             <div class="w-full">
                 <div>
-                    <AnswersList :question_id="QuestionInfo.id" ref="AnsList" />
+                    
+                    <AnswersList :question_info="QuestionInfo"   ref="AnsList" />
                 </div>
             </div>
 
@@ -126,11 +127,9 @@ import AnswerSkeleton from '../components/AnswerSkeleton.vue';
                     params: {
                         id: QuestionId.value
                     }
-                }).then((res) => {
+                }).then((res) => {          
                     
                     QuestionInfo.value = res.data.question;
-                    
-
                     QuestionInfo.value.username = res.data.username;
                 }).catch((err) => {
                     console.log(err);
@@ -139,10 +138,13 @@ import AnswerSkeleton from '../components/AnswerSkeleton.vue';
 
             const isReported = ref(false);
 
+            
+
             onMounted(async() => {
                 await getAllInfo();
                 loggedUser.value = useUser().user.id;
 
+                // check if reported
                 await axios.get('/api/question/check-reported', {
                     params: {
                         user_id: loggedUser.value,
@@ -154,6 +156,9 @@ import AnswerSkeleton from '../components/AnswerSkeleton.vue';
                 }).catch((err) => {
                     console.log(err);
                 });
+
+                //
+                
 
             });
 
@@ -189,12 +194,13 @@ import AnswerSkeleton from '../components/AnswerSkeleton.vue';
             return {
                 QuestionInfo,
                 loggedUser,
+                
                 timeStamp,
                 report,
                 isReported,
                 AnsList,
                 answerEditor,
-                submitAnswer
+                submitAnswer,
                 
             }
         },

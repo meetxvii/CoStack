@@ -9,6 +9,16 @@ const routes = [
         component: () => import('./pages/dashboard.vue'),
     },
     {
+        path: '/Technologies',
+        name: 'technologies',
+        component: () => import('./pages/Technologies.vue'),
+    },
+    {
+        path: '/Featured',
+        name: 'Featured',
+        component: () => import('./pages/Featured.vue'),
+    },
+    {
         path: '/login',
         name: 'login',
         component: () => import('./pages/login.vue'),
@@ -17,6 +27,16 @@ const routes = [
         path: '/register',
         name: 'register',
         component: () => import('./pages/register.vue'),
+    },
+    {
+        path: '/reset-password',
+        name: 'reset-password',
+        component: () => import('./pages/ResetPassword.vue'),
+    },
+    {
+        path: '/set-password/:token',
+        name: 'set-password',
+        component: () => import('./pages/SetPassword.vue'),
     },
     {
         path: '/admin',
@@ -53,6 +73,11 @@ const routes = [
         path: '/technology/:name',
         name: 'technology',
         component: () => import('./pages/Technology.vue'),
+    },
+    {
+        path: '/questions/user/:id',
+        name: 'user-question',
+        component: () => import('./pages/UserQuestions.vue'),
     },
     {
         path: '/question/:id',

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminTasks;
 use App\Http\Controllers\TechnologiesController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\Answers_Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Monolog\Handler\RotatingFileHandler;
@@ -24,6 +25,7 @@ use Monolog\Handler\RotatingFileHandler;
 
 Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
 Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('user',[\App\Http\Controllers\AuthController::class,'user']);
@@ -40,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::post('question/report', [QuestionsController::class,'reportQuestion']);
     Route::get('question/check-reported', [QuestionsController::class,'checkReported']);
+    Route::post('user/questions', [QuestionsController::class,'userQuestions']);
 
 
     //answer api
@@ -51,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('answer/report',[Answers_Controller::class,'reportAnswer']);
     Route::post('answer/check-reported',[Answers_Controller::class,'checkReported']);
     Route::post('answer/check-voted',[Answers_Controller::class,'checkVoted']);
+
+    Route::post('answer/mark-as-correct',[Answers_Controller::class,'markAsCorrect']);
 
 
     //admin apis
@@ -74,8 +79,14 @@ Route::post('admin/login',[\App\Http\Controllers\AdminAuth::class,'login']);
 Route::get('technologies',[TechnologiesController::class,'getTechnologies']);
 Route::get('technology',[TechnologiesController::class,'getTechnology']);
 
-Route::get('questions',[QuestionsController::class,'getQuestions']);
+Route::post('questions',[QuestionsController::class,'getQuestions']);
 Route::get('question',[QuestionsController::class,'getQuestionById']);
 Route::get('total-questions',[QuestionsController::class,'getTotalByTechnology']);
+Route::get('questions/featured', [QuestionsController::class,'getFeaturedQuestions']);
 
 Route::get('answers',[Answers_Controller::class,'getAnswerByQuestionId']);
+
+Route::post('search', [QuestionsController::class,'search']);
+
+Route::post('check-token', [AuthController::class,'checkToken']);
+Route::post('change-password', [AuthController::class, 'changePassword']);

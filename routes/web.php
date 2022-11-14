@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPassword;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 Route::any('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');

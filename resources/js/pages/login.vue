@@ -106,7 +106,10 @@
                     </transition>
                     
                     <div class="flex mt-5 justify-center cursor-pointer" >
-                        <div class=" cursor-default">Forgot Password?</div><div class="inline-block ml-2 hover:underline">Reset Now</div>
+                        <div class=" cursor-default">Forgot Password?</div>
+                        <div class="inline-block ml-2 hover:underline">
+                            <router-link :to="{name:'reset-password'}">Reset Now</router-link>
+                        </div>
                     </div>
                     <div>
                         <div class="mt-5 cursor-pointer" >

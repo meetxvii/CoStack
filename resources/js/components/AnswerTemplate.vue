@@ -19,9 +19,30 @@
                         <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
+                
                 <div class="w-full">
+                    <div class="flex py-2" v-if="answer.is_correct">
+                        <div class="bg-green-500/50 px-2 py-1 rounded-lg text-white">
+                            <i class="fas fa-check-circle"></i>
+                            Correct Answer
+                        </div>
+                    </div>
                     <TextEditor theme="bubble" :content="answer.answer" heigth="none" contentType="html" readonly="true" />
                     <div class="mt-2 text-white/60 flex justify-start items-center gap-2 text-sm">
+                        
+                        <div  v-if="doesOwns && !answer.is_correct">
+                            <div>
+                                <button class="bg-green-500/30 px-2 py-1 rounded-lg text-white/100" @click="markAsCorrect">
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>Mark As Correct</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div v-if="doesOwns && !answer.is_correct">
+                            |
+                        </div>
+
                         <div class="mr-auto">
                             <span class="flex items-center">@{{answer.username}}</span>
                         </div>
@@ -56,7 +77,7 @@ import moment from 'moment'
 
 import TextEditor from './TextEditor.vue'
 export default {
-    props: ['answer','user'],
+    props: ['answer','user','question_info'],
     setup (props, context) {
         
         const answer = computed(() => {
@@ -70,9 +91,14 @@ export default {
             return moment(answer.value.created_at).fromNow();
         });
 
+        const Question_info = ref(props.question_info);
+
+        const doesOwns = computed(() => {
+            return user.value.user.id == Question_info.value.user_id;
+        });
 
         const upvote = async() => {
-            console.log(user.value)
+            
             const res = await axios.post('/api/answer/upvote', {
                 answer_id: answer.value.id,
                 user_id: user.value.user.id
@@ -111,7 +137,11 @@ export default {
         const isReported = ref(false);
         const isVoted = ref(false);
 
+        
+
         onMounted( async () => {
+
+            
             // check if reported alredy
             const res = await axios.post('/api/answer/check-reported', {
                 answer_id: answer.value.id,
@@ -133,15 +163,31 @@ export default {
                 console.log(err);
             });
 
+            
         });
+
+        const markAsCorrect = async() =>{
+            const res = await axios.post('/api/answer/mark-as-correct', {
+                question_id: Question_info.value.id,
+                answer_id: answer.value.id,
+            }).then(res => {
+                
+                context.emit('reloadAnswers')
+            }).catch(err => {
+                console.log(err);
+            });
+        }
 
 
         return {
             answer,
             timeStamp,
             user,
+            Question_info,
+            doesOwns,
             upvote,
             downvote,
+            markAsCorrect,
             isReported,
             isVoted,
             report,

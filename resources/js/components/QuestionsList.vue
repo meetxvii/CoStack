@@ -1,6 +1,6 @@
 <template>
-    
     <div class="w-full flex flex-col items-center gap-4 mb-5 justify-center" v-auto-animate>
+        
         <template v-for="question in questions" :key ="question.id" >
             <QuestionTemplate :question="question" />
         </template>
@@ -17,7 +17,7 @@ import QuestionTemplate from './QuestionTemplate.vue'
 
 export default {
     name: "QuestionsList",
-    props: ['technologyID'],
+    props: ['technologyID', 'userID'],
     setup(props, context) {
         
         const questions = ref({});
@@ -25,15 +25,23 @@ export default {
         const TechId = computed(() =>{
             return props.technologyID;
         });
-        watch(TechId, async () =>{
-            await getQuestions();
+        const UserId = computed(() =>{
+            return props.userID;
         });
 
-        const getQuestions = async() => {
-            const res = await axios.get('/api/questions',{
-                params: {
-                    technology: TechId.value
-                } 
+        watch(TechId, async () =>{
+            await getQuestionsByTech();
+        });
+
+        watch(UserId, async () =>{
+            await getQuestionsByUser();
+        });
+
+        const getQuestionsByTech = async() => {         
+            const res = await axios.post('/api/questions',{
+               
+                technology: TechId.value
+                
             })
             .then(res => {
                 questions.value = res.data;
@@ -43,10 +51,21 @@ export default {
                 console.log(err);
             })
         }
+
+        const getQuestionsByUser = async() => {         
+            await axios.post('/api/user/questions', {
+                user_id: props.userID
+            }).then((res) => {
+                questions.value = res.data.questions;
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
         
         return {
             questions,
-            getQuestions,
+            getQuestionsByTech,
+            getQuestionsByUser,
         }
 
     },

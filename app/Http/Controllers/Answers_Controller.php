@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Answers;
 use App\Models\Votes;
 use App\Models\Reported_answers;
+use App\Models\Questions;
 class Answers_Controller extends Controller
 {
     function getAnswerByQuestionId(Request $request){
@@ -97,4 +98,16 @@ class Answers_Controller extends Controller
         return response()->json($vote);
     }
 
+    function markAsCorrect(Request $request){
+        $answer_id = $request->input('answer_id');
+        $answer = Answers::find($answer_id);
+        $answer->is_correct = 1;
+        $answer->save();
+
+        $question = Questions::find($answer->question_id);
+        $question->isSOlved = 1;
+        $question->save();
+        return response()->json($answer);
+
+    }
 }

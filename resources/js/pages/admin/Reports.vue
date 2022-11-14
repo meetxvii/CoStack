@@ -31,12 +31,17 @@
                     <div class="flex flex-col gap-4" v-auto-animate v-if="showQuestions">
                         <div class="bg-blue/20 py-4 px-4 rounded-lg" v-for="question in questions" :key="question.question.id" >
                             <div>
-                                <h1 class="heading-3 text-2xl">
-                                    {{question.question.title}}
-                                </h1>
+                                <router-link
+                                    :to="{ name: 'question', params: { id: question.question.id } }"
+                                    >
+                                    <h1 class="heading-3 text-2xl hover:text-blue">
+                                        {{question.question.title}}
+                                    </h1>
+                                </router-link>
                             </div>
                             <div>
                                 <h1 class="font-semibold text-white/60">
+                                    
                                     {{htmlParse(question.question.body)}}
                                 </h1>
                             </div>
@@ -83,9 +88,12 @@
                         <div class="bg-blue/20 py-4 px-4 rounded-lg" v-for="answer in answers" :key="answer.answer.id" >
                             
                             <div>
-                                <h1 class="heading-3 text-2xl">
-                                    {{htmlParse(answer.answer.answer)}}
-                                </h1>
+                                <router-link :to="{name:'question',  params: { id: answer.answer.question_id } }">
+                                    
+                                    <h1 class="heading-3 text-2xl">
+                                        {{htmlParse(answer.answer.answer)}}
+                                    </h1>
+                                </router-link>
                             </div>
                             
                             <div class="mt-2 text-white/60 flex justify-between gap-2">
