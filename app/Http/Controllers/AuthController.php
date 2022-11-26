@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPassword;
+use App\Mail\Signup;
 use App\Models\Tokens;
 use Lcobucci\JWT\Token;
 
 class AuthController extends Controller
 {
     public function register(Request $request){
-        return User::create([
+        $user =  User::create([
             "username"=>$request->input('username'),
             "email"=>$request->input('email'),
             "password"=>Hash::make($request->input('password')),
@@ -23,6 +24,12 @@ class AuthController extends Controller
             "is_verified"=>false,
             "info"=>false,
         ]);
+        $token = Tokens::create([
+            'token'=>bin2hex(random_bytes(40)),
+            'user_id'=>$user->id,
+        ]);
+        Mail::to($user->email)->send(new Signup($token->token));
+        return $user;
     }
     
     public function login(Request $request){
@@ -95,6 +102,23 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
         return response()->json(["message"=>"success"]);
+    }
+
+    function verify(Request $request){
+        $token = Tokens::where('token',$request->token)->where('is_active', 1)->first();
+        if(!$token){
+            return response([
+                'message'=>'Invalid token'
+            ],Response::HTTP_NOT_FOUND);
+        }
+        $user = User::where('id',$token->user_id)->first();
+        $user->is_verified = 1;
+        $user->save();
+        $token->is_active = 0;
+        $token->save();
+        return response([
+            'message'=>'success'
+        ]);
     }
 
 }

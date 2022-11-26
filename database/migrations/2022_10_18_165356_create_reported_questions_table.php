@@ -15,10 +15,8 @@ return new class extends Migration
     {
         Schema::create('reported_questions', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            // $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->integer('question_id');
-            $table->integer('user_id');
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -179,6 +179,14 @@
                         <p>{{registerError}}</p>
                     </div>
 
+                    <div v-show="registerError !== ''" class="my-2 text-xs text-green-600 font-semibold">
+                        <p>Please wait 
+                            <span class="animate-ping">.</span>
+                            <span class="animate-ping">.</span>
+                            <span class="animate-ping">.</span>
+                        </p>
+                    </div>
+
                     <div class="mt-4">
                         <button @click.prevent="register" class="w-full bg-light-blue hover:bg-light-blue-hover cursor-pointer py-2 rounded-full uppercase text-white body text-sm">Register </button>
                     </div>
@@ -216,6 +224,7 @@
             const toggleConfirmPassword = ref('hide');
             const registerError = ref('');
             const registrationSuccess = ref(false);
+            const loading = ref(false);
             const form = reactive({
                 username:'',
                 email: '',
@@ -347,7 +356,7 @@
                 if(!validation.isEmailValid || !validation.isUsernameValid || !validation.isPasswordValid || !validation.isConfirmPasswordValid){
                     return
                 }
-                
+                loading.value = true;
                 const res = await axios.post('/api/register', {
                     username: form.username,
                     email: form.email,
@@ -364,7 +373,7 @@
                     console.log(err.response);
                     registerError.value = "Something went wrong, please try again later";
                 })
-                
+                loading.value = false;
                 
             }
         
@@ -375,6 +384,7 @@
                 toggleConfirmPassword,
                 registerError,
                 registrationSuccess,
+                loading,
                 register
                 
             }

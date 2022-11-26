@@ -17,7 +17,7 @@ import QuestionTemplate from './QuestionTemplate.vue'
 
 export default {
     name: "QuestionsList",
-    props: ['technologyID', 'userID'],
+    props: ['technologyID'],
     setup(props, context) {
         
         const questions = ref({});
@@ -25,17 +25,15 @@ export default {
         const TechId = computed(() =>{
             return props.technologyID;
         });
-        const UserId = computed(() =>{
-            return props.userID;
-        });
+        
 
         watch(TechId, async () =>{
+            console.log("User ID changed");
+
             await getQuestionsByTech();
         });
 
-        watch(UserId, async () =>{
-            await getQuestionsByUser();
-        });
+      
 
         const getQuestionsByTech = async() => {         
             const res = await axios.post('/api/questions',{
@@ -52,20 +50,12 @@ export default {
             })
         }
 
-        const getQuestionsByUser = async() => {         
-            await axios.post('/api/user/questions', {
-                user_id: props.userID
-            }).then((res) => {
-                questions.value = res.data.questions;
-            }).catch((err) => {
-                console.log(err);
-            });
-        }
+        
         
         return {
             questions,
             getQuestionsByTech,
-            getQuestionsByUser,
+            
         }
 
     },

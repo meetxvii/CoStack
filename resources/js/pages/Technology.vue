@@ -92,7 +92,7 @@
         </div>
         <div class="px-5 md:px-20 w-full flex flex-col md:flex-row">      
                 
-            <QuestionsList :technologyID="TechnologyInfo.id" ref="Quelist" @loaded="isQueLoaded=true" v-show="isQueLoaded" />
+            <QuestionsList :technologyID="TechnologyInfo.id" ref="Quelist" @loaded="isQueLoaded=true" v-show="isQueLoaded"  />
 
             <QuestionsSkeleton v-if="!isQueLoaded" />
                 

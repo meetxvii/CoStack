@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('logout',[\App\Http\Controllers\AuthController::class,'logout']);
     Route::get('admin',[\App\Http\Controllers\AdminAuth::class,'admin']);
     Route::post('admin/logout',[\App\Http\Controllers\AdminAuth::class,'logout']);
+    Route::post('user/verify', [AuthController::class, 'verify']);
     // Route::post('delete/user',[\App\Http\Controllers\AdminTasks::class,'deleteUser']);
 
     Route::post('admin/add-technology',[TechnologiesController::class,'addTechnology']);

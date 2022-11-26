@@ -14,11 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reported_answers', function (Blueprint $table) {
-            $table->id();
-            // $table->foreignId('answer_id')->constrained()->cascadeOnDelete();
-            // $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->integer('answer_id');
-            $table->integer('user_id');
+            $table->id();            
+            $table->foreignId('answer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');            
             $table->timestamps();
         });
     }

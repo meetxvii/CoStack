@@ -31,7 +31,7 @@
                     </div>
 
                     <div>
-                        <div class="w-full bg-blue/20 py-10 rounded-md animate-pulse" v-if="!QuestionInfo.body">
+                        <div class="w-full bg-blue/20 py-10 rounded-md animate-pulse" v-if="QuestionInfo.body===''">
                         </div>
                         <div class="heading-2 text-2xl" v-if="QuestionInfo.body">
                             <TextEditor :content="QuestionInfo.body" contentType="html" theme="bubble" readonly="true" heigth="none" />
@@ -111,7 +111,9 @@ import AnswerSkeleton from '../components/AnswerSkeleton.vue';
                 return moment(date).fromNow();
             }
 
-            const QuestionInfo = ref({});
+            const QuestionInfo = ref({
+                'body' : '',
+            });
 
             const QuestionId = ref(0);
 
@@ -129,6 +131,7 @@ import AnswerSkeleton from '../components/AnswerSkeleton.vue';
                     }
                 }).then((res) => {          
                     
+                    console.table(res.data.question);
                     QuestionInfo.value = res.data.question;
                     QuestionInfo.value.username = res.data.username;
                 }).catch((err) => {

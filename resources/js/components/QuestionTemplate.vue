@@ -25,11 +25,11 @@
                 </div>
             </div>
             <div class="w-full px-2 mt-4 flex justify-end gap-4 text-white/50 text-sm">
-                <div class="capitalize flex items-center bg-blue/20 py-1 px-2 rounded gap-2">
+                <div class="capitalize flex items-center bg-blue/20 py-1 px-2 rounded gap-2" v-show="question.username">
                     <i class="fas fa-user"></i>
                      {{question.username}}
                 </div>
-                <div>|</div>
+                <div v-show="question.username">|</div>
                 <div class="capitalize flex items-center bg-blue/20 py-1 px-2 rounded gap-2">
                     <i class="fas fa-clock"></i>
 

@@ -29,6 +29,16 @@ const routes = [
         component: () => import('./pages/register.vue'),
     },
     {
+        path: '/verification',
+        name: 'verification',
+        component: () => import('./pages/verification.vue'),
+    },
+    {
+        path: '/verified/:token',
+        name: 'verified',
+        component: () => import('./pages/verified.vue'),
+    },
+    {
         path: '/reset-password',
         name: 'reset-password',
         component: () => import('./pages/ResetPassword.vue'),

@@ -35,11 +35,11 @@ class Answers_Controller extends Controller
         $vote = Votes::where('answer_id',$answer_id)->where('user_id',$user_id)->first();
         if($vote){
             if($vote->vote == 1 || $vote->vote == -1){
-                $vote->vote = 0;
+                $vote->delete();
             }else{
                 $vote->vote = 1;
+                $vote->save();
             }
-            $vote->save();
         }else{
             $vote = new Votes;
             $vote->answer_id = $answer_id;
@@ -56,11 +56,11 @@ class Answers_Controller extends Controller
         $vote = Votes::where('answer_id',$answer_id)->where('user_id',$user_id)->first();
         if($vote){
             if($vote->vote == -1 || $vote->vote == 1){
-                $vote->vote = 0;
+                $vote->delete();
             }else{
                 $vote->vote = -1;
+                $vote->save();
             }
-            $vote->save();
         }else{
             $vote = new Votes;
             $vote->answer_id = $answer_id;

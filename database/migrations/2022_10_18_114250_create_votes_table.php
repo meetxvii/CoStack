@@ -15,10 +15,8 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained();
-            // $table->foreignId('answer_id')->constrained();
-            $table->integer('user_id');
-            $table->integer('answer_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('answer_id')->constrained()->onDelete('cascade');            
             $table->integer('vote')->enum([1,-1]);
             $table->timestamps();
         });
