@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // AddAdmin::class,
+            AddAdmin::class,
             // QuestionSeeder::class,
             // Answer::class
-            vote::class
+            // vote::class
         ]);
     }
 }

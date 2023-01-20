@@ -24,10 +24,10 @@
                                             <div class="heading-3">
                                                 <h1>{{question.title}}</h1>
                                             </div>
-                                            <div class="body font-semibold ">
+                                            <!-- <div class="body font-semibold ">
                                                 <h1>{{htmlParser(question.body)}}</h1>
-                                            </div>
-                                            <div class="flex items-center my-2 pt-2 border-t border-blue/20 gap-4 text-white/60">
+                                            </div> -->
+                                            <div class="flex items-center my-2 pt-2 border-blue/20 gap-4 text-white/60">
                                                 <div class="bg-blue/20 px-2 py-1 rounded flex items-center gap-2">
                                                     <i class="fas fa-code"></i>
                                                     {{question.technology_name}}

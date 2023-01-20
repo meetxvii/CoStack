@@ -44,6 +44,11 @@ class AuthController extends Controller
                 'message'=>'Invalid credentials'
             ], Response::HTTP_UNAUTHORIZED);
         }
+        if($user->is_active=='0'){
+            return response([
+                'message'=>'Invalid credentials'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
         $token = $user->createToken('token')->plainTextToken;
         $cookie = cookie('jwt',$token,60*24*30);
         return response([

@@ -16,13 +16,13 @@
                     </div>
                 </div>
                 <router-link :to="{name:'question', params:{'id':question.id}}" >
-                    <div class="heading-3 rounded w-[80%] md:w-[80%] lg:w-[85%] mb-2 -z-10">
+                    <div class="body text-xl font-semibold rounded w-[80%] md:w-[80%] lg:w-[85%] mb-2 -z-10">
                         {{question.title}}
                     </div>
                 </router-link>
-                <div class="body font-semibold rounded w-full" v-if="htmlParser(question.body) !== ''" >
+                <!-- <div class="body font-semibold rounded w-full" v-if="htmlParser(question.body) !== ''" >
                     <h1>{{htmlParser(question.body)}}</h1>
-                </div>
+                </div> -->
             </div>
             <div class="w-full px-2 mt-4 flex justify-end gap-4 text-white/50 text-sm">
                 <div class="capitalize flex items-center bg-blue/20 py-1 px-2 rounded gap-2" v-show="question.username">

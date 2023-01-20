@@ -55,7 +55,7 @@ class AdminTasks extends Controller
     }
 
     function dashboardData(){
-        $users = User::all()->count();
+        $users = User::where('role','user')->get()->count();
         $technologies = Technologies::all()->count();
         $reported_question = Reported_answers::all()->count();
         $reported_answers = Reported_answers::all()->count();
@@ -67,7 +67,8 @@ class AdminTasks extends Controller
     }
 
     function allUsers(){
-        $users = User::all();
+
+        $users = User::where('role', 'user')->get();
         return response()->json([
             'users' => $users
         ]);
